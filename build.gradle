@@ -56,6 +56,9 @@ jacocoTestReport {
         html {
             enabled true
         }
+	xml {
+	   enabled true
+	}
     }
 
     afterEvaluate {
@@ -69,6 +72,7 @@ sonar {
   properties {
     property "sonar.projectKey", "ja-rivera94_journey-orchestrator-aggregator"
     property "sonar.organization", "ja-rivera94"
+    property "sonar.coverage.jacoco.xmlReportPaths", "build/reports/jacoco/test/jacocoTestReport.xml"
     property "sonar.host.url", "https://sonarcloud.io"
   }
 }
