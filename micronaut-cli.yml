@@ -1,0 +1,6 @@
+applicationType: default
+defaultPackage: com.example
+testFramework: junit
+sourceLanguage: java
+buildTool: gradle
+features: [annotation-api, app-name, gradle, http-client, jackson-databind, java, java-application, junit, logback, micronaut-build, netty-server, readme, rxjava2, rxjava2-http-client, rxjava2-http-server-netty, shade, yaml]

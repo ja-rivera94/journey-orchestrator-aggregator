@@ -1,0 +1,19 @@
+micronaut:
+  application:
+    name: journeyOrchestratorAggregator
+    server:
+      port: 8080
+  http:
+    services:
+      posts:
+        url: ${URL_POST}
+      routes:
+        url: ${URL_ROUTES}
+      offers:
+        url: ${URL_OFFERS}
+
+netty:
+  default:
+    allocator:
+      max-order: 3
+

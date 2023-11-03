@@ -1,0 +1,94 @@
+plugins {
+    id("com.github.johnrengelman.shadow") version "7.1.2"
+    id("io.micronaut.application") version "3.7.3"
+    id( 'java')
+    id ('jacoco')
+}
+
+group = "com.uniandes.journey"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    annotationProcessor("io.micronaut:micronaut-http-validation")
+    implementation("io.micronaut:micronaut-management")
+    implementation("io.micronaut:micronaut-http-client")
+    implementation("io.micronaut:micronaut-jackson-databind")
+    implementation("io.micronaut.rxjava2:micronaut-rxjava2")
+    implementation("io.micronaut.rxjava2:micronaut-rxjava2-http-client")
+    implementation("jakarta.annotation:jakarta.annotation-api")
+    runtimeOnly("ch.qos.logback:logback-classic")
+    runtimeOnly("io.micronaut.rxjava2:micronaut-rxjava2-http-server-netty")
+    implementation("io.micronaut:micronaut-validation")
+    compileOnly 'org.projectlombok:lombok:1.18.26'
+    annotationProcessor 'org.projectlombok:lombok:1.18.26'
+
+    testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: '5.1.1'
+    testImplementation('org.mockito:mockito-core:3.12.4')
+    testCompileOnly 'org.projectlombok:lombok:1.18.26'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.26'
+
+}
+
+
+application {
+    mainClass.set("com.uniandes.journey.Application")
+}
+java {
+    sourceCompatibility = JavaVersion.toVersion("11")
+    targetCompatibility = JavaVersion.toVersion("11")
+}
+
+
+test {
+    useJUnitPlatform()
+}
+
+check {
+    dependsOn jacocoTestReport
+}
+
+jacocoTestReport {
+    reports {
+        html {
+            enabled true
+        }
+    }
+
+    afterEvaluate {
+        classDirectories.from = files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: ['**/Application*'])
+        })
+    }
+}
+
+jacocoTestReport.dependsOn(test)
+
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                minimum = 0.8
+            }
+        }
+    }
+}
+
+jar.dependsOn(jacocoTestReport)
+jar.dependsOn(jacocoTestCoverageVerification)
+
+
+graalvmNative.toolchainDetection = false
+micronaut {
+    runtime("netty")
+    testRuntime("junit5")
+    processing {
+        incremental(true)
+        annotations("com.uniandes.journey.*")
+    }
+}
+
+
+
